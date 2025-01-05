@@ -58,6 +58,12 @@ class GameObject{
         this.position = new Vector2(x, y)
         this.size = {width: w, height: h}
         this.scripts = []
+        this.visible = true
+    }
+
+    drawInvoke(engine){
+        if (!this.visible) return
+        this.draw(engine)
     }
 
     draw (engine){
@@ -75,9 +81,11 @@ class PhysicsObject extends GameObject{
         this.friction = 0.2
         this.acceleration = new Vector2(0, 0)
         this.direction = new Vector2(0, 0)
+        this.physicsEnabled=true
     }
 
     physicsProcess(){
+        if (!this.physicsEnabled) return
         let acc = Vector2.multiply(this.acceleration, this.direction)
         let fric = new Vector2(this.friction*this.mass, this.friction*this.mass)// Vector2.scale(this.direction, this.friction)
         
@@ -252,7 +260,7 @@ class CEngine{
                     }
                 }
                 // RUN THE OBJECT DRAW METHOD
-                this.activeScene.objects[i].draw(this)
+                this.activeScene.objects[i].drawInvoke(this)
             }
         } else{
             this.clearToColor(this.backgroundColor)
