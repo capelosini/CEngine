@@ -2,8 +2,9 @@ let engine = new CEngine(document.body, innerWidth, innerHeight, 100)
 let mainScene = engine.createGameScene()
 let obj = new GameObject(20, 20, 40, 40)
 let solid = new SolidObject(50, 20, 30, 30, new Color(50, 100, 0, 0.5))
+solid.physicsEnabled=false
 
-let player = new PhysicsObject(innerWidth/2+20, innerHeight/2+20, 40, 40)
+let player = new SolidObject(innerWidth/2+20, innerHeight/2+20, 40, 40)
 
 player.friction = 0.3
 player.maxSpeed = 7
@@ -20,6 +21,7 @@ player.scripts.push(function (self){
 
     if (input.x) self.direction.x=input.x
     if (input.y) self.direction.y=input.y
+    console.log(engine.mouse.position)
 })
 // solid.scripts.push(function (self){
 //     let velocity = new Vector2(0, 0)

@@ -52,6 +52,19 @@ class Vector2{
     }
 }
 
+class Mouse{
+    constructor(){
+        this.position = new Vector2(0, 0)
+        document.addEventListener("mousemove", (e)=>{
+            this.position.x = e.clientX
+            this.position.y = e.clientY
+        })
+        // this.leftDown = false
+        // this.rightDown = false
+        // this.middleDown = false
+    }
+}
+
 // WARN: THIS IS A BASIC TYPE, IF YOU WANT AN OBJECT WITH FUNCTIONALITY CHOOSE ONE OF THE CHILD TYPES
 class GameObject{
     constructor(x, y, w, h){
@@ -66,10 +79,7 @@ class GameObject{
         this.draw(engine)
     }
 
-    draw (engine){
-        engine.ctx.fillStyle = engine.colorToString(new Color(30, 30, 30))
-        engine.ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height)
-    }
+    draw (engine){}
 }
 
 class PhysicsObject extends GameObject{
@@ -125,18 +135,19 @@ class PhysicsObject extends GameObject{
 
     draw(engine){
         this.physicsProcess()
-        engine.ctx.fillStyle = engine.colorToString(new Color(30, 30, 30))
-        engine.ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height)
+        // engine.ctx.fillStyle = engine.colorToString(new Color(30, 30, 30))
+        // engine.ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height)
     }
 }
 
-class SolidObject extends GameObject{
+class SolidObject extends PhysicsObject{
     constructor(x, y, w, h, color=new Color(30, 30, 30)){
         super(x, y, w, h)
         this.color = color
     }
     
     draw (engine){
+        this.physicsProcess()
         engine.ctx.fillStyle = engine.colorToString(this.color)
         engine.ctx.fillRect(this.position.x, this.position.y, this.size.width, this.size.height)
     }
@@ -162,6 +173,7 @@ class CEngine{
         this.backgroundColor = new Color(0, 0, 0)
         this.activeScene = null
         this.renderLoop = null
+        this.mouse=new Mouse()
         this.keyStates = {
             // Letters
             "a": false, "b": false, "c": false, "d": false, "e": false, "f": false, "g": false, 
